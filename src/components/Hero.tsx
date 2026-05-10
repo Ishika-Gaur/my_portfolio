@@ -7,16 +7,17 @@ import { Github, Linkedin, Mail, ArrowDown, Code2 } from 'lucide-react'
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-20 pb-12 z-10">
-      <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+      <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center w-full">
 
         {/* Left — Text content */}
-        <div className="order-2 md:order-1">
+        {/* On mobile: order-1 (shown first). On md+: order-1 (left column) */}
+        <div className="order-1 md:order-1">
           {/* Status badge */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-green-400/30 mb-8"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-green-400/30 mb-6 md:mb-8"
           >
             <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
             <span className="text-xs font-mono text-green-400 tracking-wider">AVAILABLE FOR OPPORTUNITIES</span>
@@ -28,7 +29,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            <h1 className="font-display text-5xl md:text-7xl leading-[1.05] mb-4">
+            <h1 className="font-display text-5xl sm:text-6xl md:text-7xl leading-[1.05] mb-4">
               <span className="block text-[var(--text-primary)]">Hi, I'm</span>
               <span className="block gradient-text font-semibold">Ishika</span>
               <span className="block text-[var(--text-primary)]">Gaur</span>
@@ -43,7 +44,7 @@ export default function Hero() {
             className="flex items-center gap-3 mb-6"
           >
             <Code2 size={18} className="text-[var(--violet)]" />
-            <p className="font-mono text-sm text-[var(--violet)] tracking-widest uppercase">
+            <p className="font-mono text-xs sm:text-sm text-[var(--violet)] tracking-widest uppercase">
               Frontend Developer · BTech CS Student
             </p>
           </motion.div>
@@ -53,7 +54,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.6 }}
-            className="text-[var(--text-secondary)] text-lg leading-relaxed mb-8 max-w-lg"
+            className="text-[var(--text-secondary)] text-base sm:text-lg leading-relaxed mb-8 max-w-lg"
           >
             Crafting beautiful, performant web experiences with{' '}
             <span className="text-[var(--rose)]">React</span> &{' '}
@@ -92,7 +93,7 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.2, duration: 0.6 }}
-            className="flex items-center gap-5"
+            className="flex items-center gap-5 flex-wrap"
           >
             {[
               { icon: Github, href: 'https://github.com/Ishika-Gaur', label: 'GitHub' },
@@ -118,7 +119,8 @@ export default function Hero() {
         </div>
 
         {/* Right — Avatar */}
-        <div className="order-1 md:order-2 flex justify-center">
+        {/* On mobile: order-2 (shown second). On md+: order-2 (right column) */}
+        <div className="order-2 md:order-2 flex justify-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -127,13 +129,13 @@ export default function Hero() {
             style={{ overflow: 'visible' }}
           >
             {/* Orbiting rings */}
-            <div className="absolute inset-0 flex items-center justify-center">
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               <div
-                className="absolute w-[380px] h-[380px] rounded-full border border-violet-500/10"
+                className="absolute w-[280px] h-[280px] sm:w-[380px] sm:h-[380px] rounded-full border border-violet-500/10"
                 style={{ animation: 'spin 25s linear infinite' }}
               />
               <div
-                className="absolute w-[440px] h-[440px] rounded-full border border-rose-glow/5"
+                className="absolute w-[320px] h-[320px] sm:w-[440px] sm:h-[440px] rounded-full border border-rose-glow/5"
                 style={{ animation: 'spin 35s linear infinite reverse' }}
               />
 
@@ -163,25 +165,23 @@ export default function Hero() {
               animate={{ y: [0, -12, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
               className="relative z-10"
-              style={{ background: 'transparent' }}
             >
-              {/* Glow behind avatar */}
+              {/* Glow behind avatar — mix-blend-mode so it blends with page bg instead of creating a dark box */}
               <div
                 className="absolute inset-0 rounded-full blur-3xl opacity-40 pointer-events-none"
-                style={{ background: 'radial-gradient(circle, var(--violet) 0%, var(--rose) 100%)' }}
+                style={{
+                  background: 'radial-gradient(circle, var(--violet) 0%, var(--rose) 100%)',
+                  mixBlendMode: 'screen',
+                }}
               />
 
               {/* Avatar image — PNG with transparent background */}
-              <div
-                className="relative w-[300px] h-[300px] md:w-[360px] md:h-[360px]"
-                style={{ background: 'transparent' }}
-              >
+              <div className="relative w-[240px] h-[240px] sm:w-[300px] sm:h-[300px] md:w-[360px] md:h-[360px]">
                 <Image
-                  src="/ishika-avatar.png"
+                  src="/avtar.png"
                   alt="Ishika Gaur"
                   fill
                   className="object-contain drop-shadow-2xl"
-                  style={{ background: 'transparent' }}
                   priority
                   unoptimized
                 />
@@ -190,7 +190,7 @@ export default function Hero() {
 
             {/* Floating tech badges */}
             {[
-              { label: 'React', x: '-60px', y: '22%', color: 'var(--teal)', duration: '7s' },
+              { label: 'React', x: '-50px', y: '22%', color: 'var(--teal)', duration: '7s' },
               { label: 'Next.js', x: 'calc(100% + 10px)', y: '28%', color: 'var(--violet)', duration: '9s' },
               { label: 'PostgreSQL', x: 'calc(100% - 20px)', y: '68%', color: 'var(--rose)', duration: '6s' },
             ].map((badge) => (
@@ -199,7 +199,7 @@ export default function Hero() {
                 initial={{ opacity: 0, scale: 0 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 1.4, duration: 0.5 }}
-                className="absolute glass border px-3 py-1.5 rounded-full text-xs font-mono whitespace-nowrap"
+                className="absolute glass border px-3 py-1.5 rounded-full text-xs font-mono whitespace-nowrap hidden sm:block"
                 style={{
                   left: badge.x,
                   top: badge.y,
