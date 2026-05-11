@@ -15,7 +15,7 @@ A stunning, animated personal portfolio built with **Next.js 14**, **Framer Moti
 
 
 ## deployed link
-https://6a008da02d99e09a6cc15a04--ishikaprofile.netlify.app/
+https://ishikaprofile.netlify.app/
 
 ## 🛠 Tech Stack
 
