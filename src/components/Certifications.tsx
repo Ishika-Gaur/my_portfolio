@@ -3,13 +3,12 @@
 import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Award, Calendar, Hash, X, Shield, Star, ExternalLink } from 'lucide-react'
+import { Award, Calendar, Hash, X, Shield, Star, ExternalLink, BadgeCheck } from 'lucide-react'
 import { useInView } from '@/lib/useInView'
 import SectionHeader from './SectionHeader'
 import Image from 'next/image'
 
 // ✅ Portal wrapper — renders children directly into document.body
-// This escapes ANY parent overflow/transform/z-index that breaks fixed positioning
 function Portal({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false)
   useEffect(() => { setMounted(true) }, [])
@@ -341,6 +340,137 @@ function CertificateModal({ cert, onClose }: { cert: Cert; onClose: () => void }
   )
 }
 
+// ─── Certificate Card (Project-style with image preview) ────────────────────
+function CertCard({ cert, index, inView, onClick }: {
+  cert: Cert
+  index: number
+  inView: boolean
+  onClick: () => void
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay: 0.15 * index + 0.2 }}
+      whileHover={{ y: -6 }}
+      whileTap={{ scale: 0.98 }}
+      onClick={onClick}
+      className="glass rounded-2xl overflow-hidden border border-white/5 hover:border-white/15 transition-all duration-300 relative group cursor-pointer flex flex-col"
+      style={{ background: 'var(--surface-2, #131325)' }}
+    >
+      {/* ── Image Preview (like projects) ── */}
+      <div className="relative w-full overflow-hidden" style={{ aspectRatio: '16/10' }}>
+        {cert.image ? (
+          <Image
+            src={cert.image}
+            alt={cert.title}
+            fill
+            sizes="(max-width: 768px) 100vw, 33vw"
+            className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          // Fallback if no image
+          <div
+            className="w-full h-full flex items-center justify-center"
+            style={{ background: `${cert.color}10` }}
+          >
+            <Award size={40} style={{ color: cert.color, opacity: 0.4 }} />
+          </div>
+        )}
+
+        {/* Gradient overlay at bottom of image */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(to bottom, transparent 40%, rgba(13,13,37,0.85) 100%)',
+          }}
+        />
+
+        {/* Verified badge — top-left (like "Live" badge in projects) */}
+        <div
+          className="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono font-semibold"
+          style={{
+            background: 'rgba(0,0,0,0.55)',
+            border: '1px solid rgba(255,255,255,0.12)',
+            backdropFilter: 'blur(8px)',
+            color: '#4ade80',
+          }}
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse inline-block" />
+          Verified
+        </div>
+
+        {/* Color accent glow on hover */}
+        <div
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+          style={{ background: `radial-gradient(circle at 50% 100%, ${cert.color}20, transparent 70%)` }}
+        />
+      </div>
+
+      {/* ── Card Body ── */}
+      <div className="p-5 flex flex-col gap-3 flex-1">
+        {/* Title */}
+        <h3 className="text-sm font-semibold leading-snug" style={{ color: 'var(--text-primary)' }}>
+          {cert.title}
+        </h3>
+
+        {/* Issuer */}
+        <p className="text-xs font-mono" style={{ color: cert.color }}>{cert.issuer}</p>
+
+        {/* Skills / tags */}
+        <div className="flex flex-wrap gap-1.5">
+          {cert.skills.slice(0, 3).map((s) => (
+            <span
+              key={s}
+              className="px-2.5 py-0.5 rounded-full text-xs font-mono"
+              style={{
+                background: `${cert.color}15`,
+                color: cert.color,
+                border: `1px solid ${cert.color}30`,
+              }}
+            >
+              {s}
+            </span>
+          ))}
+          {cert.skills.length > 3 && (
+            <span
+              className="px-2.5 py-0.5 rounded-full text-xs font-mono"
+              style={{ background: 'rgba(255,255,255,0.05)', color: 'var(--text-muted)' }}
+            >
+              +{cert.skills.length - 3}
+            </span>
+          )}
+        </div>
+
+        {/* Divider */}
+        <div className="h-px w-full" style={{ background: 'rgba(255,255,255,0.05)' }} />
+
+        {/* Date + Cert ID */}
+        <div className="flex items-center justify-between text-xs" style={{ color: 'var(--text-muted)' }}>
+          <div className="flex items-center gap-1.5">
+            <Calendar size={11} />
+            <span>{cert.date}</span>
+          </div>
+          <div className="flex items-center gap-1.5 font-mono">
+            <Hash size={11} />
+            <span>{cert.certId}</span>
+          </div>
+        </div>
+
+        {/* View Certificate CTA */}
+        <div
+          className="flex items-center gap-1.5 text-xs font-mono mt-auto opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0"
+          style={{ color: cert.color }}
+        >
+          <BadgeCheck size={13} />
+          <span>View Certificate</span>
+          <span className="ml-auto">→</span>
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
 // ─── Main Section ───────────────────────────────────────────────────────────
 export default function Certifications() {
   const { ref, inView } = useInView()
@@ -358,54 +488,13 @@ export default function Certifications() {
 
         <div className="grid md:grid-cols-3 gap-6">
           {certs.map((cert, i) => (
-            <motion.div
+            <CertCard
               key={cert.certId}
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.15 * i + 0.2 }}
-              whileHover={{ y: -6, scale: 1.02 }}
-              whileTap={{ scale: 0.97 }}
+              cert={cert}
+              index={i}
+              inView={inView}
               onClick={() => setSelected(cert)}
-              className="glass rounded-2xl p-6 border border-violet-500/10 hover:border-violet-500/30 transition-all duration-300 relative overflow-hidden group cursor-pointer"
-            >
-              <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                style={{ background: `radial-gradient(circle at 50% 0%, ${cert.color}10, transparent 70%)` }}
-              />
-              <div
-                className="absolute top-0 right-0 w-20 h-20 opacity-10 pointer-events-none"
-                style={{ background: `radial-gradient(circle at top right, ${cert.color}, transparent 70%)` }}
-              />
-              <div className="relative">
-                <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
-                  style={{ background: `${cert.color}18` }}
-                >
-                  <Award size={22} style={{ color: cert.color }} />
-                </div>
-                <h3 className="text-sm font-medium leading-snug mb-2" style={{ color: 'var(--text-primary)' }}>
-                  {cert.title}
-                </h3>
-                <p className="text-xs font-mono mb-4" style={{ color: cert.color }}>{cert.issuer}</p>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-xs" style={{ color: 'var(--text-muted)' }}>
-                    <Calendar size={12} />
-                    <span>{cert.date}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs" style={{ color: 'var(--text-muted)' }}>
-                    <Hash size={12} />
-                    <span className="font-mono">{cert.certId}</span>
-                  </div>
-                </div>
-                <div
-                  className="mt-4 flex items-center gap-1.5 text-xs font-mono opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  style={{ color: cert.color }}
-                >
-                  <span>View Certificate</span>
-                  <span>→</span>
-                </div>
-              </div>
-            </motion.div>
+            />
           ))}
         </div>
       </div>
