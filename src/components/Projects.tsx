@@ -34,6 +34,33 @@ const projects = [
     badge: 'Live',
   },
   {
+    title: 'Aifinity',
+    description:
+      'AI-powered skill-gap assessment and personalized learning roadmap platform, built for HackSynergy, a 24-hour national-level hackathon.',
+    url: 'https://aifinity-frontend.onrender.com/',
+    image: '/projects/aifinity.png',
+    tags: ['React', 'Tailwind CSS'],
+    badge: 'Hackathon',
+  },
+  {
+    title: 'VastraAura',
+    description:
+      'Full-stack saree e-commerce platform with product browsing, cart, checkout, and an admin dashboard for product management.',
+    url: 'https://aurasaree.netlify.app/',
+    image: '/projects/vastra.png',
+    tags: ['React', 'TypeScript', 'Node.js', 'MongoDB'],
+    badge: 'Personal',
+  },
+  {
+    title: 'RozGaar',
+    description:
+      'Group freelance platform with Jaano, Sikho, and Pao sections, built with organized CSS architecture for a consistent, bug-free UI.',
+    url: 'https://rozgaar-org-in-imiz.onrender.com/',
+    image: '/projects/rozgaar.png',
+    tags: ['React', 'react-router-dom'],
+    badge: 'Freelance',
+  },
+  {
     title: 'Personal Portfolio Website',
     description:
       'Animated portfolio with scroll effects, glassmorphism cards, and dark theme built with Framer Motion.',
@@ -83,8 +110,10 @@ export default function Projects() {
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.1 * i + 0.2 }}
               whileHover={{ y: -6 }}
-              className="group glass rounded-2xl overflow-hidden border border-violet-500/10 hover:border-violet-500/30 transition-all duration-500 cursor-pointer"
-              onClick={() => window.open(project.url, '_blank')}
+              className={`group glass rounded-2xl overflow-hidden border border-violet-500/10 hover:border-violet-500/30 transition-all duration-500 ${
+                project.url ? 'cursor-pointer' : 'cursor-default'
+              }`}
+              onClick={() => project.url && window.open(project.url, '_blank')}
             >
               {/* Screenshot Preview */}
               <div className="relative overflow-hidden h-48 bg-[var(--bg-secondary)]">
@@ -95,28 +124,46 @@ export default function Projects() {
                   loading="lazy"
                 />
                 {/* Hover overlay */}
-                <div className="absolute inset-0 bg-violet-900/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <div className="flex items-center gap-2 text-white font-medium text-sm">
-                    <ExternalLink size={16} />
-                    <span>Visit Site</span>
+                {project.url && (
+                  <div className="absolute inset-0 bg-violet-900/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <div className="flex items-center gap-2 text-white font-medium text-sm">
+                      <ExternalLink size={16} />
+                      <span>Visit Site</span>
+                    </div>
                   </div>
-                </div>
-                {/* Badge - Live (green) or Personal (violet) */}
+                )}
+                {/* Badge - Live (green), Hackathon (gold), Freelance (teal), or Personal (violet) */}
                 <div
                   className={`absolute top-3 right-3 flex items-center gap-1.5 backdrop-blur-sm rounded-full px-2.5 py-1 ${
                     project.badge === 'Live'
                       ? 'bg-black/60'
+                      : project.badge === 'Hackathon'
+                      ? 'bg-amber-600/70'
+                      : project.badge === 'Freelance'
+                      ? 'bg-teal-600/70'
                       : 'bg-violet-600/70'
                   }`}
                 >
                   <span
                     className={`w-1.5 h-1.5 rounded-full animate-pulse ${
-                      project.badge === 'Live' ? 'bg-green-400' : 'bg-violet-200'
+                      project.badge === 'Live'
+                        ? 'bg-green-400'
+                        : project.badge === 'Hackathon'
+                        ? 'bg-amber-200'
+                        : project.badge === 'Freelance'
+                        ? 'bg-teal-200'
+                        : 'bg-violet-200'
                     }`}
                   />
                   <span
                     className={`text-[10px] font-mono ${
-                      project.badge === 'Live' ? 'text-green-400' : 'text-violet-100'
+                      project.badge === 'Live'
+                        ? 'text-green-400'
+                        : project.badge === 'Hackathon'
+                        ? 'text-amber-100'
+                        : project.badge === 'Freelance'
+                        ? 'text-teal-100'
+                        : 'text-violet-100'
                     }`}
                   >
                     {project.badge}

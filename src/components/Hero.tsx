@@ -45,7 +45,7 @@ export default function Hero() {
           >
             <Code2 size={18} className="text-[var(--violet)]" />
             <p className="font-mono text-xs sm:text-sm text-[var(--violet)] tracking-widest uppercase">
-              Frontend Developer · BTech CS Student
+              Full Stack Developer · BTech CS Student
             </p>
           </motion.div>
 
@@ -56,10 +56,10 @@ export default function Hero() {
             transition={{ delay: 0.8, duration: 0.6 }}
             className="text-[var(--text-secondary)] text-base sm:text-lg leading-relaxed mb-8 max-w-lg"
           >
-            Crafting beautiful, performant web experiences with{' '}
+            Crafting beautiful, performant web experiences end to end — from{' '}
             <span className="text-[var(--rose)]">React</span> &{' '}
-            <span className="text-[var(--violet)]">Next.js</span>. Turning ideas into
-            pixel-perfect, responsive digital products.
+            <span className="text-[var(--violet)]">Next.js</span> interfaces to{' '}
+            <span className="text-[var(--teal)]">Node.js</span> APIs powering them.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -192,7 +192,7 @@ export default function Hero() {
             {[
               { label: 'React', x: '-50px', y: '22%', color: 'var(--teal)', duration: '7s' },
               { label: 'Next.js', x: 'calc(100% + 10px)', y: '28%', color: 'var(--violet)', duration: '9s' },
-              { label: 'PostgreSQL', x: 'calc(100% - 20px)', y: '68%', color: 'var(--rose)', duration: '6s' },
+              { label: 'Node.js', x: 'calc(100% - 20px)', y: '68%', color: 'var(--rose)', duration: '6s' },
             ].map((badge) => (
               <motion.div
                 key={badge.label}

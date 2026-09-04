@@ -9,7 +9,7 @@ const facts = [
   { icon: GraduationCap, label: 'Education', value: 'BTech CS · KITPS · 2027', color: 'var(--violet)' },
   { icon: MapPin, label: 'Location', value: 'Moradabad, Uttar Pradesh', color: 'var(--rose)' },
   { icon: Briefcase, label: 'Experience', value: '6 Months · Zentrix Infotech', color: 'var(--teal)' },
-  { icon: Heart, label: 'Passion', value: 'Building Beautiful Interfaces', color: 'var(--gold)' },
+  { icon: Heart, label: 'Passion', value: 'Building Beautiful Interfaces', color: 'var(--gold, #d4a94e)' },
 ]
 
 export default function About() {
@@ -33,21 +33,28 @@ export default function About() {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             <p className="text-[var(--text-secondary)] text-lg leading-relaxed mb-6">
-              I'm <span className="text-[var(--text-primary)] font-medium">Ishika Gaur</span>, a Computer Science student and Frontend Developer
+              I'm <span className="text-[var(--text-primary)] font-medium">Ishika Gaur</span>, a Computer Science student and Full Stack Developer
               with a genuine passion for creating digital experiences that are not just functional — but
               <span className="text-[var(--violet)]"> beautiful and memorable</span>.
             </p>
             <p className="text-[var(--text-secondary)] leading-relaxed mb-6">
               During my internship at{' '}
               <span className="text-[var(--rose)]">Zentrix Infotech</span>, I built and deployed
-              real-world production websites used by actual users — including a full hospital management site,
-              a brass products e-commerce site, and a business website. Each project sharpened my ability
-              to write clean, maintainable code with great attention to UX.
+              real-world production websites used by actual users, integrating REST APIs with a{' '}
+              <span className="text-[var(--teal)]">PostgreSQL (Neon DB)</span> backend to power
+              accurate, dynamic content. Each project sharpened my ability to write clean, maintainable
+              code with great attention to UX.
+            </p>
+            <p className="text-[var(--text-secondary)] leading-relaxed mb-6">
+              On projects like VastraAura, I've built complete{' '}
+              <span className="text-[var(--violet)]">Node.js / Express / MongoDB</span> backends
+              alongside the frontend — from product and cart flows to admin dashboards.
             </p>
             <p className="text-[var(--text-secondary)] leading-relaxed">
-              I'm always exploring new technologies, currently leveling up with{' '}
-              <span className="text-[var(--teal)]">Docker</span> and looking to dive deeper into
-              backend systems. I believe great software is equal parts logic and artistry.
+              I've also presented <span className="text-[var(--gold, #d4a94e)]">Aifinity</span> at
+              HackSynergy, a 24-hour national-level hackathon, and taken on freelance frontend work
+              like <span className="text-[var(--rose)]">RozGaar</span>. I believe great software is
+              equal parts logic and artistry.
             </p>
           </motion.div>
 
@@ -66,7 +73,10 @@ export default function About() {
                 >
                   <div
                     className="w-10 h-10 rounded-xl flex items-center justify-center mb-3"
-                    style={{ background: `${fact.color}18`, color: fact.color }}
+                    style={{
+                      background: `color-mix(in srgb, ${fact.color} 15%, transparent)`,
+                      color: fact.color,
+                    }}
                   >
                     <Icon size={20} />
                   </div>

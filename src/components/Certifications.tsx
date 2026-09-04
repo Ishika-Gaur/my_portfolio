@@ -78,6 +78,30 @@ const certs = [
     verifyUrl: 'https://zentrixinfotech.com/verify?cin=ZEN20260212HR31',
     image: '/Certificate_kara.jpg',
   },
+  {
+    title: 'HackSynergy — 24-Hour National Level Hackathon',
+    issuer: 'E-Cell IPEC',
+    certId: undefined,
+    date: 'HackSynergy 2026',
+    color: 'var(--gold, #d4a94e)',
+    description: 'Certificate of Participation for presenting Aifinity, an AI-powered skill-gap assessment and roadmap platform, at HackSynergy — a 24-hour national-level hackathon organized by E-Cell IPEC.',
+    skills: ['React', 'Team Project', 'Hackathon'],
+    grade: 'Participation',
+    verifyUrl: undefined,
+    image: '/Certificate_hacksynergy.png',
+  },
+  {
+    title: 'The Complete Python Developer',
+    issuer: 'Udemy',
+    certId: undefined,
+    date: '15 August 2026',
+    color: 'var(--rose)',
+    description: 'Completed a comprehensive course covering Python fundamentals through advanced application development.',
+    skills: ['Python'],
+    grade: 'Completed',
+    verifyUrl: undefined,
+    image: '/Certificate_python.png',
+  },
 ]
 
 type Cert = typeof certs[0]
@@ -146,6 +170,7 @@ function ImageModal({ src, onClose }: { src: string; onClose: () => void }) {
 function CertificateModal({ cert, onClose }: { cert: Cert; onClose: () => void }) {
   const [showImage, setShowImage] = useState(false)
   useScrollLock(true)
+  const hasVerify = Boolean(cert.certId || cert.verifyUrl)
 
   return (
     <Portal>
@@ -209,8 +234,8 @@ function CertificateModal({ cert, onClose }: { cert: Cert; onClose: () => void }
                 className="relative w-full rounded-2xl overflow-hidden mb-8 group"
                 style={{
                   cursor: 'zoom-in',
-                  border: `1px solid ${cert.color}33`,
-                  background: `${cert.color}08`,
+                  border: `1px solid color-mix(in srgb, ${cert.color} 20%, transparent)`,
+                  background: `color-mix(in srgb, ${cert.color} 4%, transparent)`,
                 }}
               >
                 <Image
@@ -227,8 +252,10 @@ function CertificateModal({ cert, onClose }: { cert: Cert; onClose: () => void }
                   <span
                     className="px-4 py-2 rounded-full text-xs font-mono font-semibold"
                     style={{
-                      background: `${cert.color}22`, color: cert.color,
-                      border: `1px solid ${cert.color}55`, backdropFilter: 'blur(8px)',
+                      background: `color-mix(in srgb, ${cert.color} 13%, transparent)`,
+                      color: cert.color,
+                      border: `1px solid color-mix(in srgb, ${cert.color} 33%, transparent)`,
+                      backdropFilter: 'blur(8px)',
                     }}
                   >
                     🔍 Click to enlarge
@@ -246,14 +273,17 @@ function CertificateModal({ cert, onClose }: { cert: Cert; onClose: () => void }
               </div>
               <div
                 className="w-16 h-16 rounded-full flex items-center justify-center flex-shrink-0 relative"
-                style={{ border: `2px solid ${cert.color}44`, background: `${cert.color}10` }}
+                style={{
+                  border: `2px solid color-mix(in srgb, ${cert.color} 27%, transparent)`,
+                  background: `color-mix(in srgb, ${cert.color} 6%, transparent)`,
+                }}
               >
                 <Shield size={26} style={{ color: cert.color }} />
                 <motion.div
                   animate={{ rotate: 360 }}
                   transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
                   className="absolute inset-0 rounded-full"
-                  style={{ border: `1px dashed ${cert.color}44` }}
+                  style={{ border: `1px dashed color-mix(in srgb, ${cert.color} 27%, transparent)` }}
                 />
               </div>
             </div>
@@ -276,7 +306,11 @@ function CertificateModal({ cert, onClose }: { cert: Cert; onClose: () => void }
                 <span
                   key={s}
                   className="px-3 py-1 rounded-full text-xs font-mono"
-                  style={{ background: `${cert.color}15`, color: cert.color, border: `1px solid ${cert.color}33` }}
+                  style={{
+                    background: `color-mix(in srgb, ${cert.color} 8%, transparent)`,
+                    color: cert.color,
+                    border: `1px solid color-mix(in srgb, ${cert.color} 20%, transparent)`,
+                  }}
                 >
                   {s}
                 </span>
@@ -301,32 +335,39 @@ function CertificateModal({ cert, onClose }: { cert: Cert; onClose: () => void }
               </div>
             </div>
 
-            <div className="mt-4 flex items-center justify-between flex-wrap gap-3">
-              <div className="flex items-center gap-2 text-xs font-mono" style={{ color: 'var(--text-muted)' }}>
-                <Hash size={11} />
-                <span>{cert.certId}</span>
+            {hasVerify && (
+              <div className="mt-4 flex items-center justify-between flex-wrap gap-3">
+                {cert.certId ? (
+                  <div className="flex items-center gap-2 text-xs font-mono" style={{ color: 'var(--text-muted)' }}>
+                    <Hash size={11} />
+                    <span>{cert.certId}</span>
+                  </div>
+                ) : <div />}
+                {cert.verifyUrl && (
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-1.5 text-xs font-mono" style={{ color: 'var(--text-muted)' }}>
+                      <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse inline-block" />
+                      Verified
+                    </div>
+                    <a
+                      href={cert.verifyUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-mono font-medium transition-all duration-200 hover:opacity-80 hover:scale-105"
+                      style={{
+                        background: `color-mix(in srgb, ${cert.color} 12%, transparent)`,
+                        color: cert.color,
+                        border: `1px solid color-mix(in srgb, ${cert.color} 27%, transparent)`,
+                      }}
+                    >
+                      <ExternalLink size={11} />
+                      Verify Certificate
+                    </a>
+                  </div>
+                )}
               </div>
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-1.5 text-xs font-mono" style={{ color: 'var(--text-muted)' }}>
-                  <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse inline-block" />
-                  Verified
-                </div>
-                <a
-                  href={cert.verifyUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-mono font-medium transition-all duration-200 hover:opacity-80 hover:scale-105"
-                  style={{
-                    background: `${cert.color}20`, color: cert.color,
-                    border: `1px solid ${cert.color}44`,
-                  }}
-                >
-                  <ExternalLink size={11} />
-                  Verify Certificate
-                </a>
-              </div>
-            </div>
+            )}
           </div>
         </motion.div>
       </motion.div>
@@ -347,6 +388,8 @@ function CertCard({ cert, index, inView, onClick }: {
   inView: boolean
   onClick: () => void
 }) {
+  const isVerified = Boolean(cert.verifyUrl)
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -372,7 +415,7 @@ function CertCard({ cert, index, inView, onClick }: {
           // Fallback if no image
           <div
             className="w-full h-full flex items-center justify-center"
-            style={{ background: `${cert.color}10` }}
+            style={{ background: `color-mix(in srgb, ${cert.color} 6%, transparent)` }}
           >
             <Award size={40} style={{ color: cert.color, opacity: 0.4 }} />
           </div>
@@ -386,24 +429,26 @@ function CertCard({ cert, index, inView, onClick }: {
           }}
         />
 
-        {/* Verified badge — top-left (like "Live" badge in projects) */}
+        {/* Status badge — top-left: "Verified" if there's a verify link, else "Certificate" */}
         <div
           className="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono font-semibold"
           style={{
             background: 'rgba(0,0,0,0.55)',
             border: '1px solid rgba(255,255,255,0.12)',
             backdropFilter: 'blur(8px)',
-            color: '#4ade80',
+            color: isVerified ? '#4ade80' : 'var(--text-muted)',
           }}
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse inline-block" />
-          Verified
+          <span
+            className={`w-1.5 h-1.5 rounded-full inline-block ${isVerified ? 'bg-green-400 animate-pulse' : 'bg-white/30'}`}
+          />
+          {isVerified ? 'Verified' : 'Certificate'}
         </div>
 
         {/* Color accent glow on hover */}
         <div
           className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-          style={{ background: `radial-gradient(circle at 50% 100%, ${cert.color}20, transparent 70%)` }}
+          style={{ background: `radial-gradient(circle at 50% 100%, color-mix(in srgb, ${cert.color} 12%, transparent), transparent 70%)` }}
         />
       </div>
 
@@ -424,9 +469,9 @@ function CertCard({ cert, index, inView, onClick }: {
               key={s}
               className="px-2.5 py-0.5 rounded-full text-xs font-mono"
               style={{
-                background: `${cert.color}15`,
+                background: `color-mix(in srgb, ${cert.color} 8%, transparent)`,
                 color: cert.color,
-                border: `1px solid ${cert.color}30`,
+                border: `1px solid color-mix(in srgb, ${cert.color} 18%, transparent)`,
               }}
             >
               {s}
@@ -451,10 +496,12 @@ function CertCard({ cert, index, inView, onClick }: {
             <Calendar size={11} />
             <span>{cert.date}</span>
           </div>
-          <div className="flex items-center gap-1.5 font-mono">
-            <Hash size={11} />
-            <span>{cert.certId}</span>
-          </div>
+          {cert.certId && (
+            <div className="flex items-center gap-1.5 font-mono">
+              <Hash size={11} />
+              <span>{cert.certId}</span>
+            </div>
+          )}
         </div>
 
         {/* View Certificate CTA */}
@@ -489,7 +536,7 @@ export default function Certifications() {
         <div className="grid md:grid-cols-3 gap-6">
           {certs.map((cert, i) => (
             <CertCard
-              key={cert.certId}
+              key={cert.title}
               cert={cert}
               index={i}
               inView={inView}
