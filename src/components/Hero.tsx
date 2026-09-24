@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import { Github, Linkedin, Mail, ArrowDown, Code2 } from 'lucide-react'
+import { Github, Linkedin, Mail, ArrowDown, Code2, Download } from 'lucide-react'
 
 export default function Hero() {
   return (
@@ -85,6 +85,14 @@ export default function Hero() {
               className="px-6 py-3 rounded-full text-sm font-medium glass border border-violet-500/30 text-[var(--text-primary)] hover:border-violet-500/60 transition-all duration-300 hover:bg-violet-500/5"
             >
               Get In Touch
+            </a>
+            <a
+              href="/resume.pdf"
+              download
+              className="px-6 py-3 rounded-full text-sm font-medium glass border border-teal-500/30 text-[var(--text-primary)] hover:border-teal-500/60 transition-all duration-300 hover:bg-teal-500/5 flex items-center gap-2"
+            >
+              <Download size={16} />
+              <span>Download Resume</span>
             </a>
           </motion.div>
 
